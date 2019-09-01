@@ -10,10 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.test.web.servlet.ResultActions;
 
-import service.EmployeeService;
 import tws.entity.Employee;
 import tws.entity.ParkingLot;
-import tws.entity.ParkingLotDTO;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -22,10 +20,10 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @MybatisTest
-public class EmployeeMapperTest {
+public class ParkingLotMapperTest {
 
     @Autowired
-    private EmployeeMapper employeeMapper;
+    private ParkingLotMapper parkingLotMapper;
 
     JdbcTemplate jdbcTemplate;
 
@@ -36,36 +34,26 @@ public class EmployeeMapperTest {
 
     @After
     public void tearDown() throws Exception {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "employee");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "parkingLot");
     }
     @Test
     public void shouldFetchAllEmployees() {
         // given
-        jdbcTemplate.execute("INSERT INTO EMPLOYEE VALUES(1,'zhangsan', 21);");
+        jdbcTemplate.execute("INSERT INTO PARKINGLOT VALUES(1, 20,10);");
         // when
-        List<Employee> employeeList = employeeMapper.selectAll();
+        List<ParkingLot> parkingLotList = parkingLotMapper.selectAll();
         // then
-        assertEquals(1, employeeList.size());
+        assertEquals(1, parkingLotList.size());
     }
     @Test
     public void shouldFetchInsertEmployees() {
         // given
-    	Employee employee=new Employee(2,"lisi", "21");
+    	ParkingLot parkingLot=new ParkingLot(2, 21,10);
         // when
-    	 employeeMapper.insert(employee);
-    	 List<Employee> employeeList = employeeMapper.selectAll();
+    	parkingLotMapper.insert(parkingLot);
+    	 List<ParkingLot> parkingLotList = parkingLotMapper.selectAll();
         // then   
-    	 assertEquals(1, employeeList.size());         
-    }
-    @Test
-    public void shouldFetchInsertParking() {
-        // given
-    	ParkingLot parkingLot=new ParkingLot(3, 50,10);   	
-    	EmployeeService employeeService=new EmployeeService();
-    	ParkingLotDTO parkingLotDTO=new ParkingLotDTO();
-        // when
-    	employeeService.addParkingLot(parkingLot,parkingLotDTO);     	
-        // then   
-    	 assertEquals(1, parkingLotDTO.getParkingLotList().size());         
+    	 assertEquals(1, parkingLotList.size());
+               
     }
 }
